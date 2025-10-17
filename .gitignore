@@ -45,5 +45,31 @@ app.*.map.json
 /android/app/release
 
 #flutter secret
-lib/Secret/secret.dart
+**/firebase-service-account.json
+**/secret/
+**/secrets/
 lib/Secret/firebase_options.dart
+lib/Secret/secret.dart
+**/*.env
+**/Secret/firebase_options.dart
+firebase.json
+
+
+
+# Android specific
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/key.properties
+android/gradle.properties
+android/app/google-services.json
+
+
+# iOS specific
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Pods/
+ios/Runner/GoogleService-Info.plist
+ios/Runner.xcworkspace/
+ios/build/

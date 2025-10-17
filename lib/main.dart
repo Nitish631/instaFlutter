@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'Secret/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +11,19 @@ import 'package:freehit/Utils/AppConstant.dart';
 import 'package:freehit/Database/SecurityStorageServices.dart';
 import 'package:freehit/Utils/AppRoutes.dart';
 
-
-Future<void>_firebaseMessagingBackgroundHandler(RemoteMessage message)async{
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  print('Handling a background message: ${message.messageId}');
 }
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
+
+Future<void> requestNotificationPermission() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
   );
-  await runStartupCode();
-  startRepeatingTask();
-  runApp(const MyApp());
+  print('User granted permission: ${settings.authorizationStatus}');
 }
 
 Future<void> runStartupCode() async {
@@ -34,34 +33,49 @@ Future<void> runStartupCode() async {
 
 Future<void> startRepeatingTask() async {
   final secureDB = SecurityStorageServices.instance;
-  final authmethod=Authmethod.instance;
+  final authmethod = Authmethod.instance;
 
   Timer.periodic(const Duration(minutes: 10), (timer) async {
     String? currentUser = await secureDB.getCurrentUserEmail();
     String? password = await secureDB.getPassword(currentUser!);
     if (password == null) return;
-    String? messages=await authmethod.loginUser(currentUser, password);
+    String? messages = await authmethod.loginUser(currentUser, password);
   });
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await requestNotificationPermission();
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Foreground message: ${message.messageId}');
+    if (message.notification != null) {
+      print('Notification title: ${message.notification!.title}');
+      print('Notification body: ${message.notification!.body}');
+    }
+  });
+
+  await runStartupCode();
+  startRepeatingTask();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // initialRoute:AppRoutes.login,
       routes: {
-        AppRoutes.home:(context)=>Homescreen(),
-        AppRoutes.login:(context)=>LoginScreen(),
+        AppRoutes.home: (context) => Homescreen(),
+        AppRoutes.login: (context) => LoginScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Insta',
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.brown,
-      ),
-      home:const _ScreenInitializer(
-        child: LoginScreen(),
-      ),
+      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: Colors.brown),
+      home: const _ScreenInitializer(child: LoginScreen()),
     );
   }
 }
@@ -76,6 +90,7 @@ class _ScreenInitializer extends StatefulWidget {
 
 class __ScreenInitializerState extends State<_ScreenInitializer> {
   bool isInitialized = false;
+
   @override
   Widget build(BuildContext context) {
     if (!isInitialized) {
