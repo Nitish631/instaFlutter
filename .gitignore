@@ -52,7 +52,7 @@ lib/Secret/firebase_options.dart
 lib/Secret/secret.dart
 **/*.env
 **/Secret/firebase_options.dart
-firebase.json
+**/firebase.json
 
 
 
