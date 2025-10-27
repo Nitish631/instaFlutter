@@ -63,11 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          color: AppColors.black,
+          color: AppColors.dark,
           child: SafeArea(
             bottom: false,
             child: Container(
-              color: Colors.white,
+              color: isDarkMode ? AppColors.dark : AppColors.primaryColor,
               child: Align(
                 alignment: isWidthShrinkable
                     ? Alignment.topCenter
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 1,
                               color: isDarkMode
                                   ? AppColors.primaryColor
-                                  : AppColors.black,
+                                  : AppColors.dark,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       });
                                       Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        AppRoutes.home,
+                                        AppRoutes.appScreen,
                                         (route) => false,
                                       );
                                     } else if (messages == "Invalid password") {
@@ -192,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     }
                                   }
                                 },
-                                child: _isLoading
+                                child: !_isLoading
                                     ? Container(
                                         height: isWidthShrinkable ? 40 : 30,
                                         decoration: BoxDecoration(
@@ -202,23 +202,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                         ),
                                         child: Center(
-                                          child: SizedBox(
-                                            height: 20,
-                                            width: 20,
-                                            child: CircularProgressIndicator(
+                                          child: Text(
+                                            "Login",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
                                               color: AppColors.primaryColor,
-                                              strokeWidth: 2,
                                             ),
                                           ),
                                         ),
                                       )
                                     : Center(
-                                        child: Text(
-                                          "Login",
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                        child: SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
                                             color: AppColors.primaryColor,
+                                            strokeWidth: 2,
                                           ),
                                         ),
                                       ),
@@ -238,7 +238,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   "Forgotten password?",
                                   style: GoogleFonts.poppins(
                                     fontSize: isWidthShrinkable ? 15 : 13,
-                                    color: AppColors.black,
+                                    color: isDarkMode
+                                        ? AppColors.primaryColor
+                                        : AppColors.dark,
                                   ),
                                 ),
                               ),
@@ -251,11 +253,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   children: [
                                     Center(
                                       child: Container(
-                                        width: isWidthShrinkable ? 170 : 130,
+                                        width: 130,
                                         height: 0.5,
                                         color: isDarkMode
                                             ? AppColors.borderColour
-                                            : AppColors.black,
+                                            : AppColors.dark,
                                       ),
                                     ),
                                     Text(
@@ -268,18 +270,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     Center(
                                       child: Container(
-                                        width: isWidthShrinkable ? 170 : 130,
+                                        width: 130,
                                         height: 0.5,
                                         color: isDarkMode
                                             ? AppColors.borderColour
-                                            : AppColors.black,
+                                            : AppColors.dark,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
 
-                              SizedBox(height: isWidthShrinkable ? 20 : 10),
+                              const SizedBox(height: 20),
                               InkWell(
                                 onTap: () async {
                                   setState(() {
@@ -297,7 +299,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (result!['success'] == true) {
                                     Navigator.pushNamedAndRemoveUntil(
                                       context,
-                                      AppRoutes.home,
+                                      AppRoutes.appScreen,
                                       (route) => false,
                                     );
                                   } else {
@@ -314,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       width: 0.5,
                                       color: isDarkMode
                                           ? AppColors.borderColour
-                                          : AppColors.black,
+                                          : AppColors.dark,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -334,7 +336,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontSize: isWidthShrinkable ? 16 : 12,
                                           color: isDarkMode
                                               ? AppColors.primaryColor
-                                              : AppColors.black,
+                                              : AppColors.dark,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -387,7 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   colorFilter: ColorFilter.mode(
                                     isDarkMode
                                         ? AppColors.primaryColor
-                                        : AppColors.black,
+                                        : AppColors.dark,
                                     BlendMode.srcIn,
                                   ),
                                 ),

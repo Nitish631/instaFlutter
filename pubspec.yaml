@@ -43,6 +43,8 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   firebase_core: ^4.2.0
   firebase_messaging: ^16.0.3
+  device_info_plus: ^12.1.0
+  # velocity_x: ^4.3.1
   
 
 dev_dependencies:

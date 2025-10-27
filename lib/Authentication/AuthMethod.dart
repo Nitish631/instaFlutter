@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:freehit/Database/SecurityStorageServices.dart';
+import 'package:freehit/Utils/AppConstant.dart';
 import 'package:freehit/Utils/Uri.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,12 +10,21 @@ class Authmethod {
   static final Authmethod instance = Authmethod._init();
   final SecurityStorageServices secureDB = SecurityStorageServices.instance;
   Authmethod._init();
-  
+
   Future<String?> loginUser(String email, String password) async {
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
         const String loginUrl = "${BASE_URI}auth/login";
-        Map<String, String> body = {"username": email, "password": password};
+        String? notificationToken = await secureDB.getNotificationToken();
+        Map<String, String> body = {
+          "username": email,
+          "password": password,
+          "deviceId": deviceId!,
+          "deviceName": deviceName!,
+          "os": os!,
+          "notificationToken": notificationToken!,
+        };
+        print("notificationToken: $notificationToken deviceName:$deviceName");
         final response = await http.post(
           Uri.parse(loginUrl),
           headers: {"content-type": "application/json"},
@@ -32,13 +43,14 @@ class Authmethod {
           return message;
         }
         if (response.statusCode == 500) {
-          print("SERVER ERROR");
           return "Fail to login";
         }
-        return "Server error";
+        return "Network error";
       }
-    } catch (e) {
-      return "Server error";
+    }on SocketException {
+      return "Network error.";
+    }catch(e){
+      return "Something went wrong";
     }
     return null;
   }
@@ -61,19 +73,22 @@ class Authmethod {
           }
         }
         if (response.statusCode == 400) {
-          if(data['email']!=null){
-            String message=data['email'];
+          if (data['email'] != null) {
+            String message = data['email'];
             return message;
           }
           String message = data['message'];
           return message;
         }
-        return null;
+        return "Network error";
       }
-    } catch (e) {
-      return null;
+    }on SocketException{
+      return "Network error";
     }
-    return null;
+     catch (e) {
+      return "Network error";
+    }
+    return "Network error";
   }
 
   Future<String?> verifyOtp(String email, String otpToken, String otp) async {
@@ -94,39 +109,47 @@ class Authmethod {
           return "OTP successful";
         } else if (response.statusCode == 400) {
           final data = jsonDecode(response.body);
-          if(data['password']!=null){
-            String message=data['password'];
+          if (data['password'] != null) {
+            String message = data['password'];
             return message;
           }
           String message = data['message'];
           return message;
         } else {
-          return "Request fail";
+          return "Network error";
         }
-            }
-    } catch (e) {
-      return "Request fail";
+      }
+    }on SocketException{
+      return"Network error";
+    }
+     catch (e) {
+      return "Network error";
     }
     return null;
   }
+
   Future<String?> registerUser({
     required String email,
     required String password,
     required String otpToken,
     required String fullName,
   }) async {
-    print("REGISTER USER TRIGGED");
     try {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           otpToken.isNotEmpty ||
           fullName.isNotEmpty) {
         const String signupUri = "${BASE_URI}auth/register";
+        String? notificationToken=await secureDB.getNotificationToken();
         final Map<String, dynamic> body = {
           "email": email,
           "password": password,
           "otpToken": otpToken,
           "fullName": fullName,
+          "deviceId": deviceId!,
+          "deviceName": deviceName!,
+          "os": os!,
+          "notificationToken": notificationToken!,
         };
         final response = await http.post(
           Uri.parse(signupUri),
@@ -135,45 +158,52 @@ class Authmethod {
         );
         if (response.statusCode == 201) {
           final data = jsonDecode(response.body);
-          String token="Bearer ${data['token']}";
+          String token = "Bearer ${data['token']}";
           await secureDB.saveSensitiveData(email, password, token);
           await secureDB.updateCurrentUserEmail(email);
           return "User registered successfully";
         }
         if (response.statusCode == 400) {
           final data = jsonDecode(response.body);
-          if(data['password']!=null){
-            String message=data['password'];
+          if (data['password'] != null) {
+            String message = data['password'];
             return message;
           }
-          if(data['fullName']!=null){
-            String message=data['fullName'];
+          if (data['fullName'] != null) {
+            String message = data['fullName'];
             return message;
           }
-          String message=data['message'];
+          String message = data['message'];
           return message;
         }
-          return "Server error. try again.";
+        return "Network error";
       }
-    } catch (err) {
+    }on SocketException{
+      return "Network error";
+    }
+     catch (err) {
       return null;
     }
     return null;
   }
+
   Future<String?> forgetPasswordReset({
     required String email,
     required String password,
     required String otpToken,
   }) async {
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          otpToken.isNotEmpty) {
+      if (email.isNotEmpty || password.isNotEmpty || otpToken.isNotEmpty) {
         const String signupUri = "${BASE_URI}auth/forgot-password";
+        String? notificationToken=await secureDB.getNotificationToken();
         final Map<String, dynamic> body = {
           "email": email,
           "password": password,
           "otpToken": otpToken,
+          "deviceId": deviceId!,
+          "deviceName": deviceName!,
+          "os": os!,
+          "notificationToken": notificationToken!,
         };
         final response = await http.post(
           Uri.parse(signupUri),
@@ -182,29 +212,53 @@ class Authmethod {
         );
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
-          String token="Bearer ${data['token']}";
+          String token = "Bearer ${data['token']}";
           await secureDB.saveSensitiveData(email, password, token);
           await secureDB.updateCurrentUserEmail(email);
           return "Password changed successfully";
         }
         if (response.statusCode == 400) {
           final data = jsonDecode(response.body);
-          if(data['password']!=null){
-            String message=data['password'];
+          if (data['password'] != null) {
+            String message = data['password'];
             return message;
           }
-          if(data['fullName']!=null){
-            String message=data['fullName'];
+          if (data['fullName'] != null) {
+            String message = data['fullName'];
             return message;
           }
-          String message=data['message'];
+          String message = data['message'];
           return message;
         }
-        return "Server error. try again.";
+        return "Network error";
       }
-    } catch (err) {
-      return "Server error";
+    }on SocketException{
+      return "Network error";
+    }
+     catch (err) {
+      return "Network error";
     }
     return null;
+  }
+
+  Future<void> loginUserAuto(String email, String password) async {
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        const String loginUrl = "${BASE_URI}auth/login-auto";
+        Map<String, String> body = {"username": email, "password": password};
+        final response = await http.post(
+          Uri.parse(loginUrl),
+          headers: {"content-type": "application/json"},
+          body: jsonEncode(body),
+        );
+        final data = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          String token = "Bearer ${data['token']}";
+          if (data['token']) {
+            await secureDB.saveSensitiveData(email, password, token);
+          }
+        }
+      }
+    } catch (e) {}
   }
 }

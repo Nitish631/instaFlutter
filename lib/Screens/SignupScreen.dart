@@ -50,7 +50,8 @@ class SignupScreenState extends State<SignupScreen> {
         if (messages.startsWith("No ") ||
             messages.startsWith("User ") ||
             messages.startsWith("Failed") ||
-            messages.startsWith("Invalid email")) {
+            messages.startsWith("Invalid email")||
+            messages.startsWith("Network error")) {
           if (messages.startsWith("No")) {
             setState(() {
               emailError = messages;
@@ -70,8 +71,6 @@ class SignupScreenState extends State<SignupScreen> {
             ),
           );
         }
-      } else {
-        showCustomSnackBar(context, "Request failed! Please try again");
       }
     }
   }
@@ -88,18 +87,18 @@ class SignupScreenState extends State<SignupScreen> {
         child: Container(
           height: double.infinity,
           width: double.infinity,
-          color: AppColors.black,
+          color: AppColors.dark,
           child: SafeArea(
             bottom: false,
             child: Container(
-              color: Colors.white,
+              color: isDarkMode?AppColors.dark:AppColors.primaryColor,
               child: Align(
                 alignment: isWidthShrinkable
                     ? Alignment.topCenter
                     : Alignment.center,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    maxHeight: isWidthShrinkable ? double.infinity : 730,
+                    maxHeight: isWidthShrinkable ? double.infinity : 760,
                     maxWidth: isWidthShrinkable ? double.infinity : 360,
                   ),
                   child: Container(
@@ -108,7 +107,7 @@ class SignupScreenState extends State<SignupScreen> {
                         ? double.infinity
                         : (0.65 * height! < 650 && width! > 912)
                         ? 650
-                        : 0.65 * height!,
+                        : 0.8 * height!,
                     decoration: isWidthShrinkable
                         ? null
                         : BoxDecoration(
@@ -116,7 +115,7 @@ class SignupScreenState extends State<SignupScreen> {
                               width: 1,
                               color: isDarkMode
                                   ? AppColors.primaryColor
-                                  : AppColors.black,
+                                  : AppColors.dark,
                             ),
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -158,7 +157,7 @@ class SignupScreenState extends State<SignupScreen> {
                                 errorText: emailError,
                                 onSubmit: _handleOtpRequest,
                               ),
-                              SizedBox(height: isWidthShrinkable ? 150 : 100),
+                              SizedBox(height: isWidthShrinkable ? 50 : 60),
                               InkWell(
                                 onTap: _handleOtpRequest,
                                 child: Center(
@@ -216,7 +215,7 @@ class SignupScreenState extends State<SignupScreen> {
                                       height: 0.5,
                                       color: isDarkMode
                                           ? AppColors.borderColour
-                                          : AppColors.black,
+                                          : AppColors.dark,
                                     ),
                                   ),
                                   const SizedBox(width: 4),
@@ -239,7 +238,7 @@ class SignupScreenState extends State<SignupScreen> {
                                       height: 0.5,
                                       color: isDarkMode
                                           ? AppColors.borderColour
-                                          : AppColors.black,
+                                          : AppColors.dark,
                                     ),
                                   ),
                                 ],
@@ -261,7 +260,7 @@ class SignupScreenState extends State<SignupScreen> {
                                       "Forgot password?",
                                       style: GoogleFonts.poppins(
                                         fontSize: isWidthShrinkable ? 15 : 13,
-                                        color: AppColors.black,
+                                        color: AppColors.dark,
                                       ),
                                     ),
                                   )
@@ -279,7 +278,7 @@ class SignupScreenState extends State<SignupScreen> {
                                       "Signup",
                                       style: GoogleFonts.poppins(
                                         fontSize: isWidthShrinkable ? 15 : 13,
-                                        color: AppColors.black,
+                                        color: AppColors.dark,
                                       ),
                                     ),
                                   ),
@@ -303,7 +302,7 @@ class SignupScreenState extends State<SignupScreen> {
                                     if (result!['success'] == true) {
                                       Navigator.pushNamedAndRemoveUntil(
                                         context,
-                                        AppRoutes.home,
+                                        AppRoutes.appScreen,
                                         (route) => false,
                                       );
                                     } else {
@@ -320,7 +319,7 @@ class SignupScreenState extends State<SignupScreen> {
                                         width: 0.5,
                                         color: isDarkMode
                                             ? AppColors.borderColour
-                                            : AppColors.black,
+                                            : AppColors.dark,
                                       ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -345,7 +344,7 @@ class SignupScreenState extends State<SignupScreen> {
                                                 : 12,
                                             color: isDarkMode
                                                 ? AppColors.primaryColor
-                                                : AppColors.black,
+                                                : AppColors.dark,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -388,7 +387,7 @@ class SignupScreenState extends State<SignupScreen> {
                               colorFilter: ColorFilter.mode(
                                 isDarkMode
                                     ? AppColors.primaryColor
-                                    : AppColors.black,
+                                    : AppColors.dark,
                                 BlendMode.srcIn,
                               ),
                             ),

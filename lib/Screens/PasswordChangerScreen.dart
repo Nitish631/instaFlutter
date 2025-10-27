@@ -89,7 +89,7 @@ class _PasswordChangerScreenState extends State<PasswordChangerScreen> {
         if (message == "Password changed successfully") {
           Navigator.pushNamedAndRemoveUntil(
             context,
-            AppRoutes.home,
+            AppRoutes.appScreen,
             (route) => false,
           );
         }

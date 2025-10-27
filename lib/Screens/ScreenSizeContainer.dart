@@ -19,7 +19,7 @@ class ScreenSizeContainerState extends State<ScreenSizeContainer> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
-          color: isDarkMode ? AppColors.black : AppColors.primaryColor,
+          color: isDarkMode ? AppColors.dark : AppColors.primaryColor,
           width: double.infinity,
           height: double.infinity,
           child: Center(
@@ -30,7 +30,7 @@ class ScreenSizeContainerState extends State<ScreenSizeContainer> {
                 border: isWidthShrinkable
                     ? null
                     : Border.all(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? Colors.white : AppColors.dark,
                         width: 0.5,
                       ),
                 borderRadius: BorderRadius.circular(12),

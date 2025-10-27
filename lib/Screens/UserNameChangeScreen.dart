@@ -36,7 +36,7 @@ class _UsernamechangescreenState extends State<Usernamechangescreen> {
         });
         Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoutes.home,
+          AppRoutes.appScreen,
           (route) => false,
         );
       }

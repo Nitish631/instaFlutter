@@ -42,9 +42,9 @@ class GoogleSignInService {
         final String message=responseData['message'];
         return {"message":message,"success":false};
       }
-      return {"message":"Server error.","success":false};
+      return {"message":"Network error.","success":false};
     } catch (e) {
-     return {"message":"Server error.","success":false};
+     return {"message":"Network error.","success":false};
     }
   }
 

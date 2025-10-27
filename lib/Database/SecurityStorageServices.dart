@@ -39,4 +39,17 @@ class SecurityStorageServices{
   Future<void>deleteAllAccounts()async{
     await _storage.deleteAll();
   }
+  Future<void>saveNotificationToken(String token)async{
+    await _storage.write(key: "NotificationToken", value: token);
+  }
+  Future<String?> getNotificationToken()async{
+    String? token= await _storage.read(key: 'NotificationToken');
+    return token;
+  }
+  Future<void> updatePreviousUser(String email)async{
+    await _storage.write(key: 'previous_user', value: email);
+  }
+  Future<String?> getPreviousUser()async{
+    return await _storage.read(key: "previous_user");
+  }
 }

@@ -107,7 +107,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
-          color: isDarkMode ? AppColors.black : AppColors.primaryColor,
+          color: isDarkMode ? AppColors.dark : AppColors.primaryColor,
           width: double.infinity,
           height: double.infinity,
           child: Center(
@@ -118,7 +118,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 border: isWidthShrinkable
                     ? null
                     : Border.all(
-                        color: isDarkMode ? Colors.white : Colors.black,
+                        color: isDarkMode ? AppColors.primaryColor : AppColors.dark,
                         width: 0.5,
                       ),
                 borderRadius: BorderRadius.circular(12),
@@ -136,37 +136,35 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                         SizedBox(
                           height: 100,
                           width: double.infinity,
-                          child: Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "The otp is send to:",
-                                  style: GoogleFonts.poppins(
-                                    color: isDarkMode
-                                        ? AppColors.primaryColor
-                                        : AppColors.black,
-                                    fontSize: isWidthShrinkable ? 16 : 14,
-                                  ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "The otp is send to:",
+                                style: GoogleFonts.poppins(
+                                  color: isDarkMode
+                                      ? AppColors.primaryColor
+                                      : AppColors.dark,
+                                  fontSize: isWidthShrinkable ? 16 : 14,
                                 ),
-                                Text(
-                                  widget.email,
-                                  style: GoogleFonts.poppins(
-                                    color: AppColors.linkColor,
-                                    fontSize: isWidthShrinkable ? 16 : 14,
-                                  ),
+                              ),
+                              Text(
+                                widget.email,
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.linkColor,
+                                  fontSize: isWidthShrinkable ? 16 : 14,
                                 ),
-                                Text(
-                                  "please check it and enter the OTP code.",
-                                  style: GoogleFonts.poppins(
-                                    color: isDarkMode
-                                        ? AppColors.primaryColor
-                                        : AppColors.black,
-                                    fontSize: isWidthShrinkable ? 16 : 14,
-                                  ),
+                              ),
+                              Text(
+                                "please check it and enter the OTP code.",
+                                style: GoogleFonts.poppins(
+                                  color: isDarkMode
+                                      ? AppColors.primaryColor
+                                      : AppColors.dark,
+                                  fontSize: isWidthShrinkable ? 16 : 14,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         SizedBox(
@@ -174,7 +172,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                           width: double.infinity,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: List.generate(6, (index) {
                               return SizedBox(
                                 width: 40,
@@ -186,7 +184,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                   maxLength: 1,
                                   style: GoogleFonts.poppins(
                                     fontSize: 20,
-                                    color: Colors.black,
+                                    color:isDarkMode?AppColors.primaryColor: AppColors.dark,
                                   ),
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
@@ -197,7 +195,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
                                       borderSide: const BorderSide(
-                                        color: Colors.black,
+                                        color: AppColors.dark,
                                         width: 1,
                                       ),
                                     ),
