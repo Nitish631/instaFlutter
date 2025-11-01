@@ -75,6 +75,7 @@ flutter:
     - assets/icons8-google.svg
     - assets/instagram.svg
     - assets/Meta_Platforms_Inc._logo.svg
+    - assets/comment-svgrepo-com.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

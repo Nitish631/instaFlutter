@@ -7,3 +7,13 @@ bool isDarkMode=true;
 String? deviceName;
 String? deviceId;
 String? os;
+const Map<String,String> reactions = {
+  "FIRE": "🔥",
+  "LIKE": "❤️",     // heart for like
+  "LOVE": "💕",     // double heart or you can use 💖 💗 💝 💕
+  "CARE": "🤗",
+  "LAUGH": "😂",
+  "WOW": "😮",
+  "SAD": "😢",
+  "ANGRY": "😡",
+};

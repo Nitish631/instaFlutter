@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:freehit/Screens/HomeScreen.dart';
 import 'package:freehit/Utils/AppConstant.dart';
 import 'package:freehit/Utils/Colors.dart';
 
@@ -21,7 +22,7 @@ class AppScreenState extends State<AppScreen> {
 
   // ✅ Pages
   final List<Widget> _pages = const [
-    Center(child: Text('🏠 Home Page', style: TextStyle(fontSize: 22))),
+    HomeScreen(),
     Center(child: Text('🔍 Search Page', style: TextStyle(fontSize: 22))),
     Center(child: Text('🎬 Reels Page', style: TextStyle(fontSize: 22))),
     Center(child: Text('💬 Messages Page', style: TextStyle(fontSize: 22))),
@@ -52,8 +53,11 @@ class AppScreenState extends State<AppScreen> {
         selectedIcon: Icons.video_library,
         label: "Reels",
       ),
-      _NavItem(label: "Message", widget: _buildMessageIcon()),
-      _NavItem(label: "Notification", widget: _buildNotificationIcon()),
+      _NavItem(label: "Message", widget: _buildMessageIcon(fromNav: true)),
+      _NavItem(
+        label: "Notification",
+        widget: _buildNotificationIcon(fromNav: true),
+      ),
       _NavItem(
         icon: Icons.add_box_outlined,
         selectedIcon: Icons.add_box,
@@ -168,7 +172,7 @@ class AppScreenState extends State<AppScreen> {
                             color: isDarkMode
                                 ? AppColors.primaryColor
                                 : AppColors.dark,
-                            width: 0.5,
+                            width: 1,
                           ),
                         ),
                       ),
@@ -181,8 +185,8 @@ class AppScreenState extends State<AppScreen> {
                               final item = _navItems[index];
                               final isSelected = _selectedIndex == index;
                               return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 6,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: (width <= 1264) ? 0 : 6,
                                   horizontal: 8,
                                 ),
                                 child: InkWell(
@@ -232,10 +236,7 @@ class AppScreenState extends State<AppScreen> {
                               () => isMoreOptionClicked = !isMoreOptionClicked,
                             ),
                             child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 30,
-                              ),
+                              padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
                               child: width <= 1264
                                   ? Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -374,23 +375,29 @@ class AppScreenState extends State<AppScreen> {
 
   // ✅ Custom Message Icon (Instagram-like)
   Widget _buildMessageIcon({bool fromNav = false}) {
-    Widget icon = Container(
-      height: 26,
-      width: 26,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          width: 2,
-          color: isDarkMode ? AppColors.primaryColor : AppColors.black,
+    Widget icon = Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          height: 26,
+          width: 26,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              width: 3,
+              color: isDarkMode ? AppColors.primaryColor : AppColors.black,
+            ),
+          ),
         ),
-      ),
-      child: Center(
-        child: Icon(
-          Icons.send_outlined,
-          size: 15,
-          color: isDarkMode ? AppColors.primaryColor : AppColors.black,
+        Positioned(
+          top: 4,
+          right: 4,
+          child: Transform.rotate(
+            angle: 5.497,
+            child: Icon(Icons.send, size: 15),
+          ),
         ),
-      ),
+      ],
     );
 
     return fromNav
@@ -452,6 +459,6 @@ class _NavItem {
     this.selectedIcon,
     this.widget,
     required this.label,
-    this.imageUrl
+    this.imageUrl,
   });
 }

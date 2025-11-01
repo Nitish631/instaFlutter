@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:freehit/Authentication/AuthMethod.dart';
-import 'package:freehit/Screens/ScreenSizeContainer.dart';
+import 'package:freehit/Widget/ScreenSizeContainer.dart';
 import 'package:freehit/Screens/UserNameChangeScreen.dart';
 import 'package:freehit/Utils/AppConstant.dart';
 import 'package:freehit/Utils/AppRoutes.dart';

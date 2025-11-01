@@ -3,9 +3,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:freehit/Screens/OtpVerificationScreen.dart';
-import 'package:freehit/Screens/PasswordChangerScreen.dart';
-import 'package:freehit/Screens/SignupScreen.dart';
 
 import 'Secret/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -100,6 +97,9 @@ void main() async {
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     )
+  );
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp]
   );
   await runStartupCode();
   runApp(const MyApp());
